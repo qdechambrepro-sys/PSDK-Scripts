@@ -1,0 +1,33 @@
+# Ignorer les fichiers audio
+*.mp3
+*.wav
+*.ogg
+
+# Ignorer les fichiers vidéo
+*.mp4
+*.webm
+
+# Ignorer les exécutables et archives
+*.exe
+*.zip
+*.rar
+*.7z
+
+# Ignorer les sauvegardes et temporaires
+*.bak
+*.autosave
+*.tmp
+
+# Dossiers générés automatiquement
+/build/
+/cache/
+/log/
+/tmp/
+
+# Ignorer les fichiers de config locale
+config.ini
+.settings/
+
+# Ignorer les fichiers de l'éditeur
+.DS_Store
+Thumbs.db
