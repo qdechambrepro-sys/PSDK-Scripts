@@ -1,3 +1,4 @@
+###############TEST###############
 class Battle::Visual
   # Associe les backgrounds à leurs grounds correspondants
   GROUND_BY_BATTLEBACK = {

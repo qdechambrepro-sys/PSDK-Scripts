@@ -1563,8 +1563,10 @@ module Battle
         # @return [Yuki::Animation::TimedAnimation]
         def create_sprite_move_animation
           ya = Yuki::Animation
+          #BALISE Movemetn du pokémon sauvage
           animations = @enemy_sprites.map do |sp|
-            ya.move(0.8, sp, sp.x, sp.y, sp.x + DISPLACEMENT_X, sp.y)
+            puts "Enemy sprite: #{sp.x}, #{sp.y}"
+            ya.move(0.3, sp, DISPLACEMENT_X, sp.y, sp.x + DISPLACEMENT_X, sp.y)
           end
           animation = animations.pop
           animations.each { |a| animation.parallel_add(a) }
