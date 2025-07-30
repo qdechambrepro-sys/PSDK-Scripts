@@ -1818,6 +1818,11 @@ module PFM
     def elv_demanta
       PFM.game_state.has_pokemon?(223)
     end
+    # Check evolve condition to evolve in couraton (Couraton)
+    # @return [Boolean] if the condition is valid
+    def elv_couraton
+      PFM.game_state.has_pokemon?(86)
+    end
     # Check evolve condition to evolve in Pangoro (Pandarbare)
     # @return [Boolean] if the condition is valid
     def elv_pandarbare
