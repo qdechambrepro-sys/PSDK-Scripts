@@ -767,20 +767,45 @@ module Battle
       mega_evolution_sprite.dispose
     end
     # Make a move animation
+    # BALISE Make a move animation
     # @param user [PFM::PokemonBattler]
     # @param targets [Array<PFM::PokemonBattler>]
     # @param move [Battle::Move]
-    def show_move_animation(user, targets, move)
-      return unless $options.show_animation
-      $data_animations ||= load_data('Data/Animations.rxdata')
-      id = move.id
-      user_sprite = battler_sprite(user.bank, user.position)
-      target_sprite = battler_sprite(targets.first.bank, targets.first.position)
-      original_rect = @viewport.rect.clone
-      @viewport.rect.height = Viewport::CONFIGS[:main][:height]
-      lock {@move_animator.move_animation(user_sprite, target_sprite, id, user.bank != 0) }
-      @viewport.rect = original_rect
-    end
+def show_move_animation(user, targets, move)
+  return unless $options.show_animation
+  $data_animations ||= load_data('Data/Animations.rxdata')
+  id = move.id
+  user_sprite = battler_sprite(user.bank, user.position)
+  target_sprite = battler_sprite(targets.first.bank, targets.first.position)
+  original_rect = @viewport.rect.clone
+  @viewport.rect.height = Viewport::CONFIGS[:main][:height]
+
+  # === Début : Dash si attaque de contact ===
+  if move.made_contact? && user_sprite && target_sprite
+    puts "Dash de contact pour #{user_sprite.pokemon.given_name} (#{user_sprite.x}, #{user_sprite.y}) vers #{target_sprite.pokemon.given_name} (#{target_sprite.x}, #{target_sprite.y})"
+    original_x = user_sprite.x
+    original_y = user_sprite.y
+    #offset = user.bank == 0 ? 32 : -32
+    offset = 0
+    dest_x = target_sprite.x + offset
+    dest_y = target_sprite.y
+
+    timed_ya = Yuki::Animation.wait(3)
+    ya = Yuki::Animation
+    dash_in=ya.move(2, user_sprite, original_x, original_y, 360, dest_y)
+    timed_ya.parallel_play(dash_in)
+    timed_ya.play_before(dash_in)
+    # Recul (après un petit délai)
+    dash_out=ya.move(2, user_sprite, dest_x, dest_y, original_x, original_y)
+    wait_for_animation
+  end
+  # === Fin : Dash de contact ===
+
+  # Animation principale de l’attaque
+  lock { @move_animator.move_animation(user_sprite, target_sprite, id, user.bank != 0) }
+  @viewport.rect = original_rect
+end
+
     # Show a dedicated animation
     # @param target [PFM::PokemonBattler]
     # @param id [Integer]
@@ -981,6 +1006,7 @@ module Battle
       private
       # Function that create the animation
       # @return [Yuki::Animation::TimedLoopAnimation]
+      #BALISE Idle
       def create_animation
         root = Yuki::Animation::TimedLoopAnimation.new(1.2)
         pokemon_anim = Yuki::Animation::DiscreetAnimation.new(1.2, self, :move_pokemon, 0, OFFSET_SPRITE.size - 1)
@@ -1563,9 +1589,8 @@ module Battle
         # @return [Yuki::Animation::TimedAnimation]
         def create_sprite_move_animation
           ya = Yuki::Animation
-          #BALISE Movemetn du pokémon sauvage
+          #BALISE Movement du pokémon sauvage
           animations = @enemy_sprites.map do |sp|
-            puts "Enemy sprite: #{sp.x}, #{sp.y}"
             ya.move(0.3, sp, DISPLACEMENT_X, sp.y, sp.x + DISPLACEMENT_X, sp.y)
           end
           animation = animations.pop

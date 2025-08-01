@@ -1041,6 +1041,9 @@ module Battle
       post_accuracy_check_effects(user, actual_targets)
       post_accuracy_check_move(user, actual_targets)
       play_animation(user, targets)
+      puts "#{user.given_name} uses #{name} on #{actual_targets.map(&:given_name).join(', ')}"
+      @logic.scene.visual.play_contact_move_dash(user, targets, self)
+      @scene.visual.wait_for_animation
       deal_damage(user, actual_targets) && effect_working?(user, actual_targets) && deal_status(user, actual_targets) && deal_stats(user, actual_targets) && deal_effect(user, actual_targets)
       user.add_move_to_history(self, actual_targets)
       user.add_successful_move_to_history(self, actual_targets)
@@ -1232,6 +1235,21 @@ module Battle
       animations = MoveAnimation.get(self, :first_use)
       if animations
         MoveAnimation.play(animations, @scene.visual, user, targets)
+        if move.made_contact? && user_sprite && target_sprite
+          puts "Dash de contact pour #{user_sprite.pokemon.given_name} (#{user_sprite.x}, #{user_sprite.y}) vers #{target_sprite.pokemon.given_name} (#{target_sprite.x}, #{target_sprite.y})"
+          original_x = user_sprite.x
+          original_y = user_sprite.y
+          #offset = user.bank == 0 ? 32 : -32
+          offset = 0
+          dest_x = target_sprite.x + offset
+          dest_y = target_sprite.y
+
+          ya = Yuki::Animation
+          dash_in=ya.move(2, user_sprite, original_x, original_y, 360, dest_y)
+
+          dash_out=ya.move(2, user_sprite, dest_x, dest_y, original_x, original_y)
+          wait_for_animation
+        end
       else
         @scene.visual.show_move_animation(user, targets, self)
       end
