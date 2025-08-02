@@ -1769,7 +1769,7 @@ module BattleUI
     # Create the ball animation of the Pokemon going back in ball
     # @param pokemon_going_in_the_ball_animation [Yuki::Animation::TimedAnimation]
     # @return [Yuki::Animation::TimedAnimation]
-    def go_back_ball_animation(pokemon_going_in_the_ball_animation)
+    def go_back_ball_animation(pokemon_going_in_the_ball_animation) battlebar_exp
       sprite = UI::ThrowingBallSprite.new(viewport, @pokemon)
       sprite.set_position(*sprite_position)
       sprite.y -= sprite.ball_offset_y
@@ -1960,14 +1960,15 @@ module BattleUI
     # Creates the go_in animation
     # @return [Yuki::Animation::TimedAnimation]
     def go_in_animation
-      origin_y = enemy? ? -@background.height : @viewport.rect.height + @background.height
-      return Yuki::Animation.move_discreet(0.2, self, x, origin_y, *sprite_position)
+      origin_x = enemy? ? @viewport.rect.width + @background.width : -@background.width
+      return Yuki::Animation.move_discreet(0.1, self, origin_x, y, *sprite_position)
     end
+
     # Creates the go_out animation
     # @return [Yuki::Animation::TimedAnimation]
     def go_out_animation
-      target_y = enemy? ? -@background.height : @viewport.rect.height + @background.height
-      return Yuki::Animation.move_discreet(0.2, self, *sprite_position, x, target_y)
+      target_x = enemy? ? @viewport.rect.width + @background.width : -@background.width
+      return Yuki::Animation.move_discreet(0.2, self, *sprite_position, target_x, y)
     end
     # Class showing the ball sprite if the Pokemon is enemy and caught
     class PokemonCaughtSprite < ShaderedSprite
