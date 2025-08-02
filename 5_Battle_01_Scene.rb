@@ -1886,10 +1886,11 @@ module BattleUI
     end
     private
     # Get the base position of the Pokemon in 1v1
+    #Balise position des infos barres
     # @return [Array(Integer, Integer)]
     def base_position_v1
-      return 184, 9 if enemy?
-      return 2, 198
+      return 183, 7 if enemy?
+      return 3, 7
     end
     # Get the base position of the Pokemon in 2v2+
     # @return [Array(Integer, Integer)]
@@ -2769,12 +2770,14 @@ module BattleUI
         super(viewport)
         @scene = scene
         @choice = choice
+        @bar_visibility = true
         create_sprites
       end
       # Update the button
       def update
         super
         @item_info.update
+        @scene.visual.show_info_bars(bank: 0)
         done? ? update_done : update_not_done
       end
       # Tell if the choice is done
@@ -2787,11 +2790,13 @@ module BattleUI
         @bar_visibility = false
         @last_item_button.refresh
         @info_button.refresh
+        @bar_visibility = true
+        @scene.visual.show_info_bars(bank: 0)
       end
       private
       # Update the button when it's done letting the player choose
       def update_done
-        action_y if Input.trigger?(:Y)
+        #action_y if Input.trigger?(:Y)
         action_x if Input.trigger?(:X) && !@bar_visibility
       end
       # Update the button when it's waiting for player actions
@@ -3028,6 +3033,7 @@ module BattleUI
         super(visible && @data)
       end
       private
+      #BALISE Affichage des attaques
       def create_sprites
         @background = add_sprite(0, 0, 'battle/types', 1, each_data_type.size, type: SpriteSheet)
         @text = add_text(28, 6, 0, 16, :name, color: 10, type: UI::SymText)
