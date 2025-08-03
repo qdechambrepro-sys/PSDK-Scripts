@@ -117,3 +117,43 @@ class Battle::Scene
     return pos_x_ally+sprite_size/2, 170+sprite_size
   end
   end
+
+module BattleUI
+  # Class for the battle info bar
+  # This class is used to display the battle information such as the type logos
+  # and other relevant information during the battle.
+  #
+  class InfoBar < UI::SpriteStack
+    # Crée les icônes des types du Pokémon
+    # @param bank [Integer] Banque du Pokémon (0 = joueur, 1 = ennemi)
+    def create_type_logos(bank)
+      # Supprime d'abord les éventuels anciens sprites
+      @type_logos&.each(&:dispose)
+      @type_logos = []
+
+      # On récupère le Pokémon à cet emplacement
+      pokemon = @scene.battle_info.battlers[bank][@position]
+      return unless pokemon
+
+      # On affiche chaque type sous forme de sprite
+      puts "Creating type logos for bank #{bank} at position #{@position}"
+      sprite = add_sprite(81, 16, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
+      @type_logos << sprite
+      
+    end
+
+    private
+
+    def type_count
+      __game_data[:types__id].size
+    end
+  end
+
+  class TypeLogosSprite < ShaderedSprite
+    # Set the Pokemon Data
+    # @param pokemon [PFM::Pokemon]
+    def data=(pokemon)
+      self.visible = pokemon.bank != 0 && $pokedex.creature_caught?(pokemon.id, pokemon.form)
+    end
+  end
+end

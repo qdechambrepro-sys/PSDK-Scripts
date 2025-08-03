@@ -1913,6 +1913,7 @@ module BattleUI
       create_gender_sprite
       create_level
       create_status
+      create_type_logos(bank)
       @star = create_star
     end
     def create_background
