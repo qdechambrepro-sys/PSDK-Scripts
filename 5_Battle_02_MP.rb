@@ -125,23 +125,28 @@ module BattleUI
   #
   class InfoBar < UI::SpriteStack
     # Crée les icônes des types du Pokémon
-    # @param bank [Integer] Banque du Pokémon (0 = joueur, 1 = ennemi)
-    def create_type_logos(bank)
-      # Supprime d'abord les éventuels anciens sprites
-      @type_logos&.each(&:dispose)
-      @type_logos = []
+    # @param pokemon [PFM::Pokemon]
+    def create_type_logos
 
-      # On récupère le Pokémon à cet emplacement
-      pokemon = @scene.battle_info.battlers[bank][@position]
-      return unless pokemon
+      return unless enemy?
+      return unless @pokemon
+      puts "Types de #{@pokemon.name} : #{@pokemon.type1} et #{@pokemon.type2}"
+      puts "Est ce que le Pokémon #{@pokemon.name} est capturé ? #{ $pokedex.creature_caught?(pokemon.id, pokemon.form) }"
+      if @pokemon != 0 && $pokedex.creature_caught?(pokemon.id, pokemon.form)
+        
 
-      # On affiche chaque type sous forme de sprite
-      puts "Creating type logos for bank #{bank} at position #{@position}"
-      sprite = add_sprite(81, 16, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
-      @type_logos << sprite
-      
+        sprite_type1 = add_sprite(99, 22, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
+        sprite_type1.sy = @pokemon.type1
+        sprite_type1.z = 10000
+        sprite_type1.visible = true
+
+        sprite_type2 = add_sprite(115, 22, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
+        sprite_type2.sy = @pokemon.type2
+        sprite_type2.z = 10000
+        sprite_type2.visible = true
+
+      end
     end
-
     private
 
     def type_count

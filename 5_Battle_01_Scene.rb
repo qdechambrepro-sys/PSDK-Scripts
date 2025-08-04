@@ -1769,7 +1769,7 @@ module BattleUI
     # Create the ball animation of the Pokemon going back in ball
     # @param pokemon_going_in_the_ball_animation [Yuki::Animation::TimedAnimation]
     # @return [Yuki::Animation::TimedAnimation]
-    def go_back_ball_animation(pokemon_going_in_the_ball_animation) battlebar_exp
+    def go_back_ball_animation(pokemon_going_in_the_ball_animation) 
       sprite = UI::ThrowingBallSprite.new(viewport, @pokemon)
       sprite.set_position(*sprite_position)
       sprite.y -= sprite.ball_offset_y
@@ -1853,6 +1853,7 @@ module BattleUI
       @scene = scene
       create_sprites
       self.pokemon = pokemon
+      create_type_logos
     end
     # Update the InfoBar
     def update
@@ -1913,7 +1914,6 @@ module BattleUI
       create_gender_sprite
       create_level
       create_status
-      create_type_logos(bank)
       @star = create_star
     end
     def create_background
@@ -1991,7 +1991,8 @@ module BattleUI
       # @param pokemon [PFM::PokemonBattler]
       # @return [String]
       def background_filename(pokemon)
-        return 'battle/battlebar_enemy' if pokemon.bank != 0
+        return 'battle/battlebar_enemy' if pokemon.bank != 0 && !$pokedex.creature_caught?(pokemon.id, pokemon.form)
+        return 'battle/battlebar_enemy_caught' if pokemon.bank != 0 && $pokedex.creature_caught?(pokemon.id, pokemon.form)
         return 'battle/battlebar_actor' if pokemon.from_party?
         return 'battle/battlebar_ally'
       end
