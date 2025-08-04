@@ -1920,26 +1920,30 @@ module BattleUI
       @background = add_sprite(0, 0, NO_INITIAL_IMAGE, type: Background)
     end
     def create_hp
-      @hp_background = add_sprite(*hp_background_coordinates, 'battle/battlebar_')
+      @hp_background = add_sprite(*hp_background_coordinates, enemy? ? 'battle/battlebar_custom_ennemy' : 'battle/battlebar_custom', type: ShaderedSprite)
       @hp_bar = push_sprite Bar.new(@viewport, *hp_bar_coordinates, RPG::Cache.interface('battle/bars_hp'), *HP_BAR_INFO)
       @hp_bar.data_source = :hp_rate
-      @hp_text = add_text(66, 17, 0, 10, enemy? ? :void_string : :hp_pokemon_number, type: SymText, color: 10)
+      with_font(30) do
+        puts "Texte à afficher : #{enemy? ? :void_string : :hp_pokemon_number}"
+
+        @hp_text = add_text(89, 27, 0, 10, enemy? ? :void_string : :hp_pokemon_number,0,1, type: SymText, color: 10)
+      end
     end
     def create_exp
       return if enemy?
-      add_sprite(36, 30, 'battle/battlebar_exp')
-      @exp_bar = push_sprite Bar.new(@viewport, 37, 31, RPG::Cache.interface('battle/bars_exp'), *EXP_BAR_INFO)
+      add_sprite(53, 39, 'battle/battlebar_exp')
+      @exp_bar = push_sprite Bar.new(@viewport, 75, 43, RPG::Cache.interface('battle/bars_exp'), *EXP_BAR_INFO)
       @exp_bar.data_source = :exp_rate
     end
     def hp_background_coordinates
-      return enemy? ? [8, 12] : [18, 12]
+      return enemy? ? [8, 12] : [9, 15]
     end
     def hp_bar_coordinates
-      return enemy? ? [x + 23, y + 13] : [x + 33, y + 13]
+      return enemy? ? [x + 23, y + 13] : [25 , 20]
     end
     def create_name
       with_font(20) do
-        @name = add_text(8, -4, 0, 16, :given_name, 0, 1, color: 10, type: SymText)
+        @name = add_text(10, 0, 0, 16, :given_name, 0, 1, color: 10, type: SymText)
       end
     end
     def create_catch_sprite
@@ -1949,7 +1953,9 @@ module BattleUI
       add_sprite(81, -3, NO_INITIAL_IMAGE, type: GenderSprite)
     end
     def create_level
-      add_text(91, -6, 0, 16, :level_pokemon_number, 0, 1, color: 10, type: SymText)
+      with_font(31) do
+        add_text(91, -6, 0, 16, :level_pokemon_number, 0, 1, color: 10, type: SymText)
+      end
     end
     def create_status
       add_sprite(8, 19, NO_INITIAL_IMAGE, type: StatusSprite)
@@ -3069,7 +3075,7 @@ module BattleUI
       end
       private
       def create_sprites
-        @pp_background = add_sprite(122, 214, 'battle/pp_box', 1, 3, type: SpriteSheet)
+        @pp_background = add_sprite(122, 214, 'battle/pp_box_custom', 1, 3, type: SpriteSheet)
         @pp_text = add_text(146, 218, 0, 16, :pp_text, 1, color: 10, type: UI::SymText)
       end
     end
