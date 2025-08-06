@@ -130,8 +130,6 @@ module BattleUI
 
       return unless enemy?
       return unless @pokemon
-      puts "Types de #{@pokemon.name} : #{@pokemon.type1} et #{@pokemon.type2}"
-      puts "Est ce que le Pokémon #{@pokemon.name} est capturé ? #{ $pokedex.creature_caught?(pokemon.id, pokemon.form) }"
       if @pokemon != 0 && $pokedex.creature_caught?(pokemon.id, pokemon.form)
         
 
@@ -149,10 +147,12 @@ module BattleUI
     end
     private
 
-    def type_count
-      __game_data[:types__id].size
+    def isthepokemoncaught
+      puts "Pokemon caught : #{$pokedex.creature_caught?(pokemon.id, pokemon.form)}"
+      return $pokedex.creature_caught?(pokemon.id, pokemon.form)
     end
   end
+
 
   class TypeLogosSprite < ShaderedSprite
     # Set the Pokemon Data

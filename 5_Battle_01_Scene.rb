@@ -1820,7 +1820,7 @@ module BattleUI
     include GoingInOut
     include MultiplePosition
     # The information of the HP Bar
-    HP_BAR_INFO = [92, 4, 0, 0, 6]
+    HP_BAR_INFO = [102, 4, 0, 0, 6]
     # bw, bh, bx, by, nb_states
     # The information of the Exp Bar
     EXP_BAR_INFO = [88, 2, 0, 0, 1]
@@ -1920,7 +1920,9 @@ module BattleUI
       @background = add_sprite(0, 0, NO_INITIAL_IMAGE, type: Background)
     end
     def create_hp
-      @hp_background = add_sprite(*hp_background_coordinates, enemy? ? 'battle/battlebar_custom_ennemy' : 'battle/battlebar_custom', type: ShaderedSprite)
+      battlebar_ally = 'battle/battlebar_custom_ally'
+      battlebar_ennemy = isthepokemoncaught ? 'battle/battlebar_custom_enemy' : 'battle/battlebar_custom_enemy_not_caught'
+      @hp_background = add_sprite(*hp_background_coordinates, enemy? ? battlebar_ennemy : battlebar_ally, type: ShaderedSprite)
       @hp_bar = push_sprite Bar.new(@viewport, *hp_bar_coordinates, RPG::Cache.interface('battle/bars_hp'), *HP_BAR_INFO)
       @hp_bar.data_source = :hp_rate
       with_font(30) do
@@ -1997,8 +1999,7 @@ module BattleUI
       # @param pokemon [PFM::PokemonBattler]
       # @return [String]
       def background_filename(pokemon)
-        return 'battle/battlebar_enemy' if pokemon.bank != 0 && !$pokedex.creature_caught?(pokemon.id, pokemon.form)
-        return 'battle/battlebar_enemy_caught' if pokemon.bank != 0 && $pokedex.creature_caught?(pokemon.id, pokemon.form)
+        return 'battle/battlebar_enemy' if pokemon.bank != 0 
         return 'battle/battlebar_actor' if pokemon.from_party?
         return 'battle/battlebar_ally'
       end
@@ -2623,7 +2624,7 @@ module BattleUI
     include UI
     include PlayerChoiceAbstraction
     # Coordinate of each buttons
-    BUTTON_COORDINATE = [[172, 172], [246, 182], [162, 201], [236, 211]]
+    BUTTON_COORDINATE = [[16, 213], [16+72, 213], [16+72*2, 213], [16+72*3, 213]]
     # Create a new PlayerChoice Window
     # @param viewport [Viewport]
     # @param scene [Battle::Scene]
