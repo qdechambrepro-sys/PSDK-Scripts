@@ -1920,15 +1920,11 @@ module BattleUI
       @background = add_sprite(0, 0, NO_INITIAL_IMAGE, type: Background)
     end
     def create_hp
-      battlebar_ally = 'battle/battlebar_custom_ally'
-      battlebar_ennemy = isthepokemoncaught ? 'battle/battlebar_custom_enemy' : 'battle/battlebar_custom_enemy_not_caught'
-      @hp_background = add_sprite(*hp_background_coordinates, enemy? ? battlebar_ennemy : battlebar_ally, type: ShaderedSprite)
+      @hp_background = add_sprite(*hp_background_coordinates, enemy? ? 'battle/battlebar_custom_enemy_not_caught' : 'battle/battlebar_custom_ally', type: ShaderedSprite)
       @hp_bar = push_sprite Bar.new(@viewport, *hp_bar_coordinates, RPG::Cache.interface('battle/bars_hp'), *HP_BAR_INFO)
       @hp_bar.data_source = :hp_rate
       with_font(30) do
-        puts "Texte à afficher : #{enemy? ? :void_string : :hp_pokemon_number}"
-
-        @hp_text = add_text(89, 27, 0, 10, enemy? ? :void_string : :hp_pokemon_number,0,1, type: SymText, color: 10)
+        @hp_text = add_text(93, 27, 0, 10, enemy? ? :void_string : :hp_pokemon_number,0,1, type: SymText, color: 10)
       end
     end
     def create_exp
@@ -1938,10 +1934,10 @@ module BattleUI
       @exp_bar.data_source = :exp_rate
     end
     def hp_background_coordinates
-      return enemy? ? [8, 12] : [9, 15]
+      return enemy? ? [9, 15] : [9, 15]
     end
     def hp_bar_coordinates
-      return enemy? ? [x + 23, y + 13] : [25 , 20]
+      return enemy? ? [25, 20] : [25 , 20]
     end
     def create_name
       with_font(20) do
@@ -2762,12 +2758,12 @@ module BattleUI
         @background = add_background('battle/background')
         @item_box = add_sprite(0, 61, 'battle/last_item_box')
         @y = 61
-        @item_name = add_text(14, 13, 0, 16, :exact_name, color: 0, type: UI::SymText)
-        @item_icon = add_sprite(240, 2, NO_INITIAL_IMAGE, type: UI::ItemSprite)
-        @remaining = add_text(287, 13, 0, 16, nil.to_s, 0)
-        @description = add_text(14, 34, 284, 16, :descr, color: 0, type: UI::SymMultilineText)
-        @use_text = add_text(151, 88, 0, 16, text_get(22, 0), color: 0)
-        @icon = add_sprite(129, 88, NO_INITIAL_IMAGE, :X, type: UI::KeyShortcut)
+        @item_name = add_text(17, 13, 0, 16, :exact_name, color: 0, type: UI::SymText)
+        @item_icon = add_sprite(250, 2, NO_INITIAL_IMAGE, type: UI::ItemSprite)
+        @remaining = add_text(287, 10, 0, 16, nil.to_s, 0)
+        @description = add_text(30, 34, 284, 16, :descr, color: 0,type: UI::SymMultilineText)
+        @use_text = add_text(151, 91, 0, 16, text_get(22, 0), color: 0)
+        @icon = add_sprite(129, 90, NO_INITIAL_IMAGE, :X, type: UI::KeyShortcut)
       end
     end
     # UI element showing the sub_choice and interacting with the parent choice
@@ -3107,14 +3103,14 @@ module BattleUI
         @background = add_background('battle/background')
         @box = add_sprite(0, 61, 'battle/description_box')
         @y = 61
-        @skill_name = add_text(14, 13, 0, 16, :name, type: UI::SymText)
-        @power_text = add_text(133, 13, 0, 16, text_get(27, 37), color: 10)
+        @skill_name = add_text(16, 13, 0, 16, :name, type: UI::SymText)
+        @power_text = add_text(134, 13, 0, 16, text_get(27, 37), color: 10)
         @power_value = add_text(210, 13, 0, 16, :power_text, 2, type: UI::SymText)
         @accuracy_text = add_text(229, 13, 0, 16, text_get(27, 39), color: 10)
-        @accuracy_value = add_text(306, 13, 0, 16, :accuracy_text, 2, type: UI::SymText)
-        @description = add_text(14, 34, 284, 16, :description, color: 0, type: UI::SymMultilineText)
-        @category_text = add_text(117, 88, 0, 16, text_get(27, 36), color: 10)
-        @move_category = add_sprite(175, 89, NO_INITIAL_IMAGE, type: UI::CategorySprite)
+        @accuracy_value = add_text(304, 13, 0, 16, :accuracy_text, 2, type: UI::SymText)
+        @description = add_text(20, 34, 284, 16, :description, 1, color: 0, type: UI::SymMultilineText)
+        @category_text = add_text(117, 93, 0, 16, text_get(27, 36), color: 10)
+        @move_category = add_sprite(171, 93, NO_INITIAL_IMAGE, type: UI::CategorySprite)
       end
     end
     # Element showing a special button

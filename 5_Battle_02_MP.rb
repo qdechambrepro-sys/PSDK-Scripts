@@ -132,15 +132,16 @@ module BattleUI
       return unless @pokemon
       if @pokemon != 0 && $pokedex.creature_caught?(pokemon.id, pokemon.form)
         
-
-        sprite_type1 = add_sprite(99, 22, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
+        under_bar = add_sprite(94, 26, 'battle/underbar_ennemy_caught', type: ShaderedSprite)
+        under_bar.visible = true
+        sprite_type1 = add_sprite(97, 26, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
         sprite_type1.sy = @pokemon.type1
-        sprite_type1.z = 10000
+        sprite_type1.z = 100
         sprite_type1.visible = true
 
-        sprite_type2 = add_sprite(115, 22, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
+        sprite_type2 = add_sprite(111, 26, 'battle/type_logo', 1, each_data_type.size, type: SpriteSheet)
         sprite_type2.sy = @pokemon.type2
-        sprite_type2.z = 10000
+        sprite_type2.z = 101
         sprite_type2.visible = true
 
       end
@@ -148,7 +149,7 @@ module BattleUI
     private
 
     def isthepokemoncaught
-      puts "Pokemon caught : #{$pokedex.creature_caught?(pokemon.id, pokemon.form)}"
+      
       return $pokedex.creature_caught?(pokemon.id, pokemon.form)
     end
   end
