@@ -2868,8 +2868,8 @@ module BattleUI
         create_item_info
       end
       def create_special_buttons
-        @last_item_button = add_sprite(12, 214, NO_INITIAL_IMAGE, :last_item, type: SpecialButton)
-        @info_button = add_sprite(2, 188, NO_INITIAL_IMAGE, :info, type: SpecialButton)
+        @last_item_button = add_sprite(0, 185, NO_INITIAL_IMAGE, :last_item, type: SpecialButton)
+        @info_button = add_sprite(0, 160, NO_INITIAL_IMAGE, :info, type: SpecialButton)
       end
       def create_item_info
         @item_info = ItemInfo.new(@viewport)
@@ -3219,8 +3219,8 @@ module BattleUI
         create_move_description
       end
       def create_special_buttons
-        @descr_button = add_sprite(12, 214, NO_INITIAL_IMAGE, @scene, :descr, type: SpecialButton)
-        @mega_button = add_sprite(2, 183, NO_INITIAL_IMAGE, @scene, :mega, type: SpecialButton)
+        @descr_button = add_sprite(0, 185, NO_INITIAL_IMAGE, @scene, :descr, type: SpecialButton)
+        @mega_button = add_sprite(0, 160, NO_INITIAL_IMAGE, @scene, :mega, type: SpecialButton)
       end
       def create_move_description
         @move_description = MoveDescription.new(@viewport)
